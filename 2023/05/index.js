@@ -18,12 +18,10 @@ for (let block = 0; block < blockborders.length - 1; block++) {
   blocks.push({ header, body });
 }
 const mappings = seeds.map((seed) => [Number(seed)]);
-mappings.forEach((seed, sx) => {
-  blocks.forEach((block, bx) => {
+mappings.forEach((seed) => {
+  blocks.forEach((block) => {
     const search = seed[seed.length - 1];
     const found = block.body.find((x) => {
-      const low = x[1];
-      const high = x[1] + x[2];
       return search >= x[1] && search < x[1] + x[2];
     });
     const diff = found ? found[0] - found[1] : 0;
@@ -33,3 +31,22 @@ mappings.forEach((seed, sx) => {
 const locations = mappings.map((x) => x[x.length - 1]);
 const part1 = Math.min(...locations);
 console.log("Part 1: ", part1);
+
+let minimum = Infinity;
+for (let index = 0; index < seeds.length; index += 2) {
+  const start = Number(seeds[index]);
+  const count = Number(seeds[index + 1]);
+  console.log("Block: ", start, start + count);
+  for (let j = 0; j < count; j++) {
+    let search = start + j;
+    blocks.forEach((block) => {
+      const found = block.body.find((x) => {
+        return search >= x[1] && search < x[1] + x[2];
+      });
+      const diff = found ? found[0] - found[1] : 0;
+      search = search + diff;
+    });
+    if (search < minimum) minimum = search;
+  }
+}
+console.log("Part 2: ", minimum);
