@@ -18,6 +18,9 @@ let waypoints = [];
 lines.forEach((line) => {
   if (line.substring(2, 3) === "A") waypoints.push(line.substring(0, 3));
 });
+
+//// Brute force takes too long. //////
+/*
 let way = "";
 // main loop
 do {
@@ -31,3 +34,26 @@ do {
   // console.log(waypoints);
 } while (!waypoints.reduce((bool, x) => bool && x[2] === "Z", true));
 console.log("Part2: ", step);
+*/
+
+//// Try find lcm on each single solution ==> only works if every starting point always ends at the same endpoint
+const results = [];
+waypoints.forEach((route) => {
+  let step = 0;
+  let way = "";
+  // main loop
+  do {
+    way = instructions.shift();
+    instructions.push(way);
+    route = routes[route + way];
+    step++;
+  } while (route[2] !== "Z");
+  results.push(step);
+});
+console.log(results);
+
+// find least common multiple (greatest common divisor method)
+const gcd = (a, b) => (b == 0 ? a : gcd(b, a % b));
+const lcm = (a, b) => (a * b) / gcd(a, b);
+const Part2 = results.reduce(lcm, 1);
+console.log("Part 2: ", Part2);
