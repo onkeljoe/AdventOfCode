@@ -19,7 +19,7 @@ lines.forEach((line) => {
   if (line.substring(2, 3) === "A") waypoints.push(line.substring(0, 3));
 });
 
-//// Brute force takes too long. //////
+//// Brute force takes way too long. //////
 /*
 let way = "";
 // main loop
@@ -50,7 +50,6 @@ waypoints.forEach((route) => {
   } while (route[2] !== "Z");
   results.push(step);
 });
-console.log(results);
 
 // find least common multiple (greatest common divisor method)
 const gcd = (a, b) => (b == 0 ? a : gcd(b, a % b));
