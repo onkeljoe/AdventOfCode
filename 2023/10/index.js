@@ -65,6 +65,7 @@ let symbol = "";
 let previous = "";
 let dir = "";
 const opposite = { N: "S", E: "W", S: "N", W: "E" };
+const visited = [];
 
 // find S
 let point = { x: 0, y: 0 };
@@ -90,6 +91,7 @@ if ((nextpoint.x === point.x && nextpoint.y === point.y) || symbol === ".") {
 }
 console.log("First: ", nextpoint, " Symbol: ", symbol);
 point = nextpoint;
+visited.push(point);
 
 // find next
 do {
@@ -97,7 +99,26 @@ do {
   point = go(point.x, point.y, dir);
   symbol = lines[point.y][point.x];
   previous = opposite[dir];
+  visited.push(point);
   steps++;
 } while (symbol !== "S");
 console.log("Steps: ", steps);
 console.log("Part1: ", steps / 2);
+
+//Part 2
+
+let inside = 0;
+const lineright = "7|JS".split(""); // state of "S" checked manually ;-)
+lines.forEach((line, y) => {
+  let outside = true;
+  const chars = line.split("");
+  chars.forEach((dot, x) => {
+    if (!visited.find((z) => z.x === x && z.y === y)) {
+      if (!outside) inside++;
+    } else if (lineright.indexOf(dot) >= 0) {
+      outside = !outside;
+    }
+  });
+});
+console.log("Part2: ", inside);
+// console.log(visited);
