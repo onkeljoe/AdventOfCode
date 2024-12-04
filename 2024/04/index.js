@@ -7,40 +7,52 @@ const matrix = lines.map((line) => line.split(""));
 const lineCount = lines.length;
 const columnCount = lines[0].length;
 const columns = [];
-for (let i = 0; i<columnCount; i++) {
+for (let i = 0; i < columnCount; i++) {
   const col = lines.map((line) => line[i]);
   columns.push(col.join(""));
 }
 // Diagonale rechts oben -> links unten, oberes Dreieck
 const diagLeft = [];
-for (let startCol = columnCount-1; startCol>=0; startCol--) {
+for (let startCol = columnCount - 1; startCol >= 0; startCol--) {
   let diag = [];
-  for (let row = 0, col=startCol; row < lineCount && col >= 0; row++, col--) {
+  for (let row = 0, col = startCol; row < lineCount && col >= 0; row++, col--) {
     diag.push(matrix[row][col]);
   }
   diagLeft.push(diag.join(""));
 }
 // Diagonale rechts oben -> links unten, unteres Dreieck
-for (let startRow = 1; startRow<lineCount; startRow++) {
+for (let startRow = 1; startRow < lineCount; startRow++) {
   let diag = [];
-  for (let row = startRow, col=columnCount-1; row < lineCount && col >= 0; row++, col--) {
+  for (
+    let row = startRow, col = columnCount - 1;
+    row < lineCount && col >= 0;
+    row++, col--
+  ) {
     diag.push(matrix[row][col]);
   }
   diagLeft.push(diag.join(""));
 }
 // Diagonale links oben -> rechts unten, oberes Dreieck
 const diagRight = [];
-for (let startCol = 0; startCol<columnCount; startCol++) {
+for (let startCol = 0; startCol < columnCount; startCol++) {
   let diag = [];
-  for (let row = 0, col=startCol; row < lineCount && col < columnCount; row++, col++) {
+  for (
+    let row = 0, col = startCol;
+    row < lineCount && col < columnCount;
+    row++, col++
+  ) {
     diag.push(matrix[row][col]);
   }
   diagRight.push(diag.join(""));
 }
 // Diagonale links oben -> rechts unten, unteres Dreieck
-for (let startRow = 1; startRow<lineCount; startRow++) {
+for (let startRow = 1; startRow < lineCount; startRow++) {
   let diag = [];
-  for (let row = startRow, col=0; row < lineCount && col < columnCount; row++, col++) {
+  for (
+    let row = startRow, col = 0;
+    row < lineCount && col < columnCount;
+    row++, col++
+  ) {
     diag.push(matrix[row][col]);
   }
   diagRight.push(diag.join(""));
@@ -76,5 +88,18 @@ console.log("Teil 1: ", sum1);
 
 // #############################################
 
-const sum2 = 0;
+let count2 = 0;
+for (let row = 0; row < lineCount - 2; row++) {
+  for (let col = 0; col < columnCount - 2; col++) {
+    if (
+      ((matrix[row][col] === "M" && matrix[row + 2][col + 2] === "S") ||
+        (matrix[row][col] === "S" && matrix[row + 2][col + 2] === "M")) &&
+      ((matrix[row][col + 2] === "M" && matrix[row + 2][col] === "S") ||
+        (matrix[row][col + 2] === "S" && matrix[row + 2][col] === "M")) &&
+      matrix[row + 1][col + 1] === "A"
+    )
+      count2++;
+  }
+}
+const sum2 = count2;
 console.log("Teil 2: ", sum2);
